@@ -7,6 +7,14 @@
  ****************************************************************/
 function getBookById(bookId, books) {
   // Your code goes here
+  let book;
+  for (let i = 0; i < books.length; i++) {
+    if (books[i].id === bookId) {
+      book = books[i];
+    }
+  }
+  // book = books.filter(book => book.id === bookId);
+  return book;
 }
 
 /**************************************************************
@@ -18,6 +26,9 @@ function getBookById(bookId, books) {
  ****************************************************************/
 function getAuthorByName(authorName, authors) {
   // Your code goes here
+  let author;
+  author = authors.find(a => a.name.toLowerCase() === authorName.toLowerCase());
+  return author;
 }
 
 /**************************************************************
@@ -28,6 +39,17 @@ function getAuthorByName(authorName, authors) {
  ****************************************************************/
 function bookCountsByAuthor(authors) {
   // Your code goes here
+  let bookCount = [];
+  for (let i = 0; i < authors.length; i++) {
+    let obj;
+    // let count =authors[i].books.length;
+    obj = {
+      author: authors[i].name,
+      bookCount: authors[i].books.length
+    };
+    bookCount.push(obj);
+  }
+  return bookCount;
 }
 
 /**************************************************************
@@ -40,8 +62,14 @@ function bookCountsByAuthor(authors) {
 function booksByColor(books) {
   const colors = {};
 
-  // Your code goes here
-
+  for (let i = 0; i < books.length; i++) {
+    let color = books[i].color;
+    // books[i].pop;
+    let titles = [];
+    let arr = books.filter(b => b.color === color);
+    titles = arr.map(x => x.title);
+    colors[color] = titles;
+  }
   return colors;
 }
 
@@ -55,6 +83,12 @@ function booksByColor(books) {
  ****************************************************************/
 function titlesByAuthorName(authorName, authors, books) {
   // Your code goes here
+  let authorBooks = books.filter(
+    book => book.authors[0].name.toLowerCase() === authorName.toLowerCase()
+  );
+  let titles = authorBooks.map(book => book.title);
+
+  return titles;
 }
 
 /**************************************************************
@@ -66,6 +100,11 @@ function titlesByAuthorName(authorName, authors, books) {
  ****************************************************************/
 function mostProlificAuthor(authors) {
   // Your code goes here
+  let numOfBooks = authors.map(a => a.books.length);
+  let max = Math.max(...numOfBooks);
+  let author = authors.find(auth => auth.books.length === max);
+
+  return author.name;
 }
 
 /**************************************************************
@@ -93,6 +132,21 @@ function mostProlificAuthor(authors) {
  ****************************************************************/
 function relatedBooks(bookId, authors, books) {
   // Your code goes here
+  let book = books.find(b => b.id === bookId);
+  let titles;
+  let authorsBooks;
+
+  if (book.authors.length > 1) {
+    for (let i = 0; i < book.authors.length; i++) {
+      authorsBooks = books.filter(b => b.authors[i] === book.authors[i]);
+    }
+  } else {
+    authorsBooks = books.filter(b => b.authors[0] === book.authors[0]);
+  }
+
+  titles = authorsBooks.map(b => b.title);
+
+  return titles;
 }
 
 /**************************************************************
@@ -102,6 +156,7 @@ function relatedBooks(bookId, authors, books) {
  *   co-authored the greatest number of books
  ****************************************************************/
 function friendliestAuthor(authors) {
+  // let ids = authors.filter(a => a.authors.length > 1);
   // Your code goes here
 }
 
